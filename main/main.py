@@ -62,7 +62,7 @@ for i in range(opt.max_epochs):
     model.optim_state['learningRate'] = model.optim_state['learningRate'] * opt.lr_decay
 
     recordDev = model.predict_dataset(dev_dataset)
-    model.save('./trainedmodel/', opt, [recordDev], i)
+    model.save('../trainedmodel/', opt, [recordDev], i)
     # if i == opt.max_epochs then
     #     model.params:copy( model.best_params )
     #     recordDev = model:predict_dataset(dev_dataset)
