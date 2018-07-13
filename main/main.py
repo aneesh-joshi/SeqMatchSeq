@@ -1,6 +1,7 @@
 # Training settings
 import argparse
-
+import sys
+sys.path.append('..')
 import torch
 
 import util.loadFiles as tr

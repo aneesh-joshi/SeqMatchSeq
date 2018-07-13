@@ -6,10 +6,10 @@ import torch
 
 
 def init(opt):
-    if not os.path.isfile("./data/" + opt.task + "/vocab_py.t7"):
+    if not os.path.isfile("../data/" + opt.task + "/vocab_py.t7"):
         buildVocab(opt.task)
 
-    if not os.path.isfile("./data/" + opt.task + "/sequence/train_py.t7"):
+    if not os.path.isfile("../data/" + opt.task + "/sequence/train_py.t7"):
         if opt.task == 'snli':
             buildData('dev', opt.task)
             buildData('test', opt.task)
@@ -17,7 +17,7 @@ def init(opt):
         else:
             buildData('all', opt.task)
 
-    if not os.path.isfile("./data/" + opt.task + "/initEmb_py.t7"):
+    if not os.path.isfile("../data/" + opt.task + "/initEmb_py.t7"):
         buildVacab2Emb(opt)
 
 
@@ -32,9 +32,9 @@ def buildVocab(task):
         ivocab = {}
         vocab['NULL'] = 0
         ivocab[0] = 'NULL'
-        filenames = ["./data/" + task + "/WikiQACorpus/WikiQA-train.txt",
-                     "./data/" + task + "/WikiQACorpus/WikiQA-dev.txt",
-                     "./data/" + task + "/WikiQACorpus/WikiQA-test.txt"]
+        filenames = ["../data/" + task + "/WikiQACorpus/WikiQA-train.txt",
+                     "../data/" + task + "/WikiQACorpus/WikiQA-dev.txt",
+                     "../data/" + task + "/WikiQACorpus/WikiQA-test.txt"]
         for filename in filenames:
             for line in open(filename):
                 divs = line.split('\t')
@@ -47,28 +47,28 @@ def buildVocab(task):
                             ivocab[curr_idx] = word
 
         print(len(ivocab))
-        torch.save(vocab, "./data/" + task + "/vocab_py.t7")
-        torch.save(ivocab, "./data/" + task + "/ivocab_py.t7")
+        torch.save(vocab, "../data/" + task + "/vocab_py.t7")
+        torch.save(ivocab, "../data/" + task + "/ivocab_py.t7")
     else:
         raise Exception('The specified task is not supported yet!')
 
 
 def loadVocab(task):
-    return torch.load("./data/%s/vocab_py.t7" % task)
+    return torch.load("../data/%s/vocab_py.t7" % task)
 
 
 def loadiVocab(task):
-    return torch.load("./data/" + task + "/ivocab_py.t7")
+    return torch.load("../data/" + task + "/ivocab_py.t7")
 
 
 def loadVacab2Emb(task):
     print("Loading embedding ...")
-    return torch.load("./data/" + task + "/initEmb_py.t7")
+    return torch.load("../data/" + task + "/initEmb_py.t7")
 
 
 def loadData(filename, task):
     print("Loading data " + filename + "...")
-    return torch.load("./data/" + task + "/sequence/" + filename + "_py.t7")
+    return torch.load("../data/" + task + "/sequence/" + filename + "_py.t7")
 
 
 def buildVacab2Emb(opt):
@@ -82,7 +82,7 @@ def buildVacab2Emb(opt):
     print("Loading " + opt.preEmb + " ...")
     if opt.preEmb == 'glove':
         if opt.wvecDim in [300]:  # TODO: support 50, 100, 200 as well
-            file = open("./data/" + opt.preEmb + "/glove.840B.%sd.txt" % opt.wvecDim, 'r')
+            file = open("../data/" + opt.preEmb + "/glove.840B.%sd.txt" % opt.wvecDim, 'r')
         else:
             raise Exception("Glove doesn't have %s dimension embeddings" % opt.wvecDim)
     else:
@@ -102,8 +102,8 @@ def buildVacab2Emb(opt):
     print("Number of words not appear in " + opt.preEmb + ": " + str(len(vocab) - len(embRec)))
     if opt.task == 'snli':
         pass  # TODO
-    torch.save(emb, "./data/" + opt.task + "/initEmb_py.t7")
-    torch.save(embRec, "./data/" + opt.task + "/unUpdateVocab_py.t7")
+    torch.save(emb, "../data/" + opt.task + "/initEmb_py.t7")
+    torch.save(embRec, "../data/" + opt.task + "/unUpdateVocab_py.t7")
 
 
 def buildData(filename, task):
@@ -117,9 +117,9 @@ def buildData(filename, task):
         pass  # TODO
     elif task == 'wikiqa':
         filenames = {
-            "train": './data/' + task + '/WikiQACorpus/WikiQA-train.txt',
-            "dev": './data/' + task + '/WikiQACorpus/WikiQA-dev.txt',
-            "test": './data/' + task + '/WikiQACorpus/WikiQA-test.txt'
+            "train": '../data/' + task + '/WikiQACorpus/WikiQA-train.txt',
+            "dev": '../data/' + task + '/WikiQACorpus/WikiQA-dev.txt',
+            "test": '../data/' + task + '/WikiQACorpus/WikiQA-test.txt'
         }
         for folder, filename in filenames.items():
             data = []
@@ -156,6 +156,6 @@ def buildData(filename, task):
                 candidates.append(curr_a_words)
                 labels.append(curr_label)
 
-            torch.save(data, "./data/" + task + "/sequence/" + folder + '_py.t7')
+            torch.save(data, "../data/" + task + "/sequence/" + folder + '_py.t7')
 
     return dataset
