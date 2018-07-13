@@ -333,6 +333,7 @@ class compAggWikiqa(nn.Module):
         return res
 
     def save(self, path, config, result, epoch):
+        print(path)
         assert os.path.isdir(path)
         paraPath = path + config.task + str(config.expIdx)
         paraBestPath = path + config.task + str(config.expIdx) + '_best'
